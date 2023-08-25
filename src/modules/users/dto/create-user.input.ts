@@ -2,6 +2,19 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateUserInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @IsString()
+  @IsNotEmpty({ message: '' })
+  name: string;
+
+  @IsEmail()
+  @IsNotEmpty({ message: '' })
+  email: string;
+
+  @IsString()
+  @IsNotEmpty({ message: '' })
+  password: string;
+
+  @IsString()
+  @IsNotEmpty({ message: '' })
+  role: string;
 }

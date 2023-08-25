@@ -1,7 +1,25 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
+@Entity()
 export class User {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @PrimaryGeneratedColumn({ type: 'int' })
+  @Field(() => ID)
+  id: number;
+
+  @Column({ type: 'varchar', length: 45 })
+  name: string;
+
+  @Column({ type: 'varchar', length: 45, unique: true })
+  email: string;
+
+  @Column({ type: 'varchar', length: 45 })
+  password: string;
+
+  @Column({ type: 'varchar', length: 45 })
+  role: string;
+
+  // @OneToMany(() => RegisteredTime, (registeredtime) => registeredtime.user_id)
+  // registeredtimes: RegisteredTime[];
 }
