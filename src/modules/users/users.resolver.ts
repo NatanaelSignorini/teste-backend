@@ -5,7 +5,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
 @Resolver('User')
-export class UserResolver {
+export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
   @Query(() => [User])

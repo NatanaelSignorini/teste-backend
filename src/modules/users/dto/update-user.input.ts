@@ -6,20 +6,20 @@ export class UpdateUserInput {
   @IsOptional()
   @IsString()
   @IsNotEmpty({ message: 'Invalid characters' })
-  name: string;
+  name?: string;
 
   @IsOptional()
   @IsEmail()
   @IsNotEmpty({ message: 'Invalid E-mail' })
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty({ message: 'Invalid password' })
-  password: string;
+  password?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty({ message: 'Invalid role' })
-  role: string;
+  role?: string;
 }
