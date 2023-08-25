@@ -16,7 +16,13 @@ export class UsersResolver {
 
   @Query(() => User)
   async user(@Args('id') id: number): Promise<User> {
-    const user = this.usersService.findUserById(id);
+    const user = this.usersService.getUserById(id);
+    return user;
+  }
+
+  @Query(() => User)
+  async userByEmail(@Args('email') email: string): Promise<User> {
+    const user = this.usersService.getUserByEmail(email);
     return user;
   }
 
