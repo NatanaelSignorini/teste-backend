@@ -9,7 +9,7 @@ export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Mutation(() => AuthType)
-  public async singup(@Args('data') data: AuthInput): Promise<AuthType> {
+  public async signIn(@Args('data') data: AuthInput): Promise<AuthType> {
     const response = await this.authService.validadeUser(data);
     return {
       user: response.user,
