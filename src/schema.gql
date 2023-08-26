@@ -4,9 +4,14 @@
 
 type User {
   id: ID!
+  role: ERole!
   name: String!
   email: String!
-  role: String!
+}
+
+enum ERole {
+  ADMIN
+  EMPLOYEE
 }
 
 type AuthType {
@@ -23,8 +28,6 @@ type Query {
 type Mutation {
   singIn(data: AuthInput!): AuthType!
   createUser(data: CreateUserInput!): User!
-  updateUser(id: Float!, data: UpdateUserInput!): User!
-  deleteUser(id: Float!): Boolean!
 }
 
 input AuthInput {
@@ -34,14 +37,7 @@ input AuthInput {
 
 input CreateUserInput {
   name: String!
-  email: String!
   password: String!
-  role: String!
-}
-
-input UpdateUserInput {
-  name: String
-  email: String
-  password: String
-  role: String
+  role: ERole!
+  email: String!
 }

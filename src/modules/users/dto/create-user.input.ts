@@ -1,10 +1,12 @@
-import { InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { ERole } from '../entities/user.entity';
 
 @InputType()
 export class CreateUserInput {
   @IsString()
   @IsNotEmpty({ message: 'name not null' })
+  @Field()
   name: string;
 
   @IsEmail()
@@ -13,10 +15,12 @@ export class CreateUserInput {
 
   @IsString()
   @IsNotEmpty({ message: 'password not null' })
+  @Field()
   password: string;
 
-  @IsString()
   @IsNotEmpty({ message: 'role not null' })
-  //@Contains('Admin', { message: 'role diferent Admin or user' })
-  role: string;
+  @Field(() => ERole)
+  role: ERole;
+
+  // @Contains(this.newProperty, { message: 'role diferent Admin or user' })
 }

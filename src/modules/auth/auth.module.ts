@@ -6,8 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategy/local.strategy';
+// import { LocalStrategy } from './strategy/local.strategy';
 import { jwtConstants } from './constants';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -16,12 +17,12 @@ import { jwtConstants } from './constants';
       useFactory: () => ({
         secret: jwtConstants.secret,
         signOptions: {
-          expiresIn: '60s',
+          expiresIn: '60m',
         },
       }),
     }),
     PassportModule,
   ],
-  providers: [AuthResolver, AuthService, UsersService, LocalStrategy],
+  providers: [AuthResolver, AuthService, UsersService, JwtStrategy],
 })
 export class AuthModule {}

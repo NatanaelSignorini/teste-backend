@@ -1,5 +1,12 @@
 import { InputType } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { ERole } from '../entities/user.entity';
 
 @InputType()
 export class UpdateUserInput {
@@ -19,7 +26,7 @@ export class UpdateUserInput {
   password?: string;
 
   @IsOptional()
-  @IsString()
   @IsNotEmpty({ message: 'Invalid role' })
-  role?: string;
+  @IsEnum(ERole)
+  role?: ERole;
 }
