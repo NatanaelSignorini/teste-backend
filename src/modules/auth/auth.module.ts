@@ -11,9 +11,9 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       useFactory: () => ({
-        secret: 'teste',
+        secret: process.env.JWT_SECRET,
         signOptions: {
-          expiresIn: '30s',
+          expiresIn: process.env.JWT_EXPIRESIN,
         },
       }),
     }),
