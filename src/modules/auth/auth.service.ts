@@ -2,20 +2,32 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { AuthInput } from './dto/auth.input';
 import { AuthType } from './dto/auth.type';
+import { User } from '../users/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async validadeUser(data: AuthInput): Promise<AuthType> {
-    const user = this.userService.getUserByEmail(data.email);
+    const user = await this.userService.getUserByEmail(data.email);
 
-    if (data.password !== (await user).password) {
+    if (data.password !== user.password) {
       throw new UnauthorizedException('Incorrect Password');
     }
+
+    const token = await this.jwtToken(user);
     return {
       user,
-      token: 'token',
+      token,
     };
+  }
+
+  private async jwtToken(user: User): Promise<string> {
+    const payload = { username: user.name, sub: user.id };
+    return this.jwtService.signAsync(payload);
   }
 }

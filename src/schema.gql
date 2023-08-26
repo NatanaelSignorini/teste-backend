@@ -9,6 +9,11 @@ type User {
   role: String!
 }
 
+type AuthType {
+  user: User!
+  token: String!
+}
+
 type Query {
   users: [User!]!
   user(id: Float!): User!
@@ -16,9 +21,15 @@ type Query {
 }
 
 type Mutation {
+  signIn(data: AuthInput!): AuthType!
   createUser(data: CreateUserInput!): User!
   updateUser(id: Float!, data: UpdateUserInput!): User!
   deleteUser(id: Float!): Boolean!
+}
+
+input AuthInput {
+  email: String!
+  password: String!
 }
 
 input CreateUserInput {
