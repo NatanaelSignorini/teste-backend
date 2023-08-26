@@ -5,6 +5,7 @@ import {
   HideField,
   registerEnumType,
 } from '@nestjs/graphql';
+import { encodePassword } from 'src/utils/bcrypt';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum ERole {
@@ -29,7 +30,7 @@ export class User {
   @Column({ type: 'varchar', length: 45, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 72 })
+  @Column({ type: 'varchar', length: 72, transformer: encodePassword })
   @HideField()
   password: string;
 
