@@ -17,5 +17,6 @@ export class CreateUserInput {
 
   @IsString()
   @IsNotEmpty({ message: 'role not null' })
+  //@Contains('Admin', { message: 'role diferent Admin or user' })
   role: string;
 }

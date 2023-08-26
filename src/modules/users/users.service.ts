@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -39,6 +40,9 @@ export class UsersService {
 
   async createUser(data: CreateUserInput): Promise<User> {
     const user = this.userRepository.create(data);
+    if (data.role !== 'Admin' || 'User') {
+      throw new UnauthorizedException('Not Admin or User');
+    }
     const userSaved = await this.userRepository.save(user);
     if (!userSaved) {
       throw new InternalServerErrorException(

@@ -16,7 +16,7 @@ export class AuthService {
     const user = await this.userService.getUserByEmail(data.email);
 
     if (data.password !== user.password) {
-      throw new UnauthorizedException('Incorrect Password');
+      throw new UnauthorizedException('Incorrect User or password');
     }
 
     const token = await this.jwtToken(user);
