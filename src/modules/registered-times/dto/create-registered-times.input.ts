@@ -4,8 +4,8 @@ import { EtimeTypes } from '../entities/registered-times.entity';
 
 @InputType()
 export class CreateTimeRegisteredInput {
-  @Field()
   @IsNotEmpty({ message: 'Not null Id_User' })
+  @Field()
   user_id: number;
 
   @IsNotEmpty({ message: 'Not null DataTime' })

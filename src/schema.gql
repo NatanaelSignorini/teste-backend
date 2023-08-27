@@ -60,9 +60,9 @@ input AuthInput {
 
 input CreateUserInput {
   name: String!
+  email: String!
   password: String!
   role: ERole!
-  email: String!
 }
 
 input UpdateUserInput {
