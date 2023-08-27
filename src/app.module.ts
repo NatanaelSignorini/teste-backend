@@ -7,6 +7,7 @@ import { DatabaseModule } from './config/database.module';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { RegisteredTimesModule } from './modules/registered-times/registered-times.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UsersModule } from './modules/users/users.module';
     }),
     AuthModule,
     UsersModule,
+    RegisteredTimesModule,
   ],
   providers: [],
 })

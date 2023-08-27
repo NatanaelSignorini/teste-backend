@@ -21,6 +21,4 @@ export class CreateUserInput {
   @IsNotEmpty({ message: 'role not null' })
   @Field(() => ERole)
   role: ERole;
-
-  // @Contains(this.newProperty, { message: 'role diferent Admin or user' })
 }

@@ -5,8 +5,9 @@ import {
   HideField,
   registerEnumType,
 } from '@nestjs/graphql';
+import { RegisteredTimes } from 'src/modules/registered-times/entities/registered-times.entity';
 import { encodePassword } from 'src/utils/bcrypt';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum ERole {
   ADMIN = 'admin',
@@ -38,6 +39,6 @@ export class User {
   @Field(() => ERole)
   role: ERole;
 
-  // @OneToMany(() => RegisteredTime, (registeredtime) => registeredtime.user_id)
-  // registeredtimes: RegisteredTime[];
+  @OneToMany(() => RegisteredTimes, (registeredTime) => registeredTime.user_id)
+  registeredtimes: RegisteredTimes[];
 }
