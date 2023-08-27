@@ -1,19 +1,19 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { ERole, Users } from './entities/user.entity';
+import { Users } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UseGuards } from '@nestjs/common';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+// import { UseGuards } from '@nestjs/common';
+// import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+// import { RolesGuard } from '../auth/guards/roles.guard';
+// import { Roles } from '../auth/decorators/roles.decorator';
 
 @Resolver('User')
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ERole.EMPLOYEE)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(ERole.EMPLOYEE)
   @Query(() => [Users])
   async usersAll(): Promise<Users[]> {
     const users = await this.usersService.findAllUsers();

@@ -51,8 +51,6 @@ type Mutation {
   updateUser(id: Float!, data: UpdateUserInput!): Users!
   deleteUser(id: Float!): Boolean!
   createRegister(data: CreateTimeRegisteredInput!): RegisteredTimes!
-  updateRegister(id: Float!, data: UpdateRegisteredTimeInput!): RegisteredTimes!
-  deleteRegister(id: Float!): Boolean!
 }
 
 input AuthInput {
@@ -78,10 +76,4 @@ input CreateTimeRegisteredInput {
   user_id: Float!
   time_registered: DateTime!
   time_types: EtimeTypes!
-}
-
-input UpdateRegisteredTimeInput {
-  user_id: Float!
-  time_registered: DateTime!
-  time_types: EtimeTypes
 }
