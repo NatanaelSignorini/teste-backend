@@ -2,11 +2,29 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type RegisteredTimes {
+  id: ID!
+  time_types: EtimeTypes!
+  user_id: Float!
+  time_registered: DateTime!
+}
+
+enum EtimeTypes {
+  In
+  Out
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Users {
   id: ID!
   role: ERole!
   name: String!
   email: String!
+  registeredtimes: [RegisteredTimes!]!
 }
 
 enum ERole {
@@ -15,21 +33,26 @@ enum ERole {
 }
 
 type AuthType {
-  user: User!
+  user: Users!
   token: String!
 }
 
 type Query {
-  usersAll: [User!]!
-  userById(id: Float!): User!
-  userByEmail(email: String!): User!
+  usersAll: [Users!]!
+  userById(id: Float!): Users!
+  userByEmail(email: String!): Users!
+  registeredTimesById(id: Float!): RegisteredTimes!
+  registeredTimesAll: [RegisteredTimes!]!
 }
 
 type Mutation {
   singIn(data: AuthInput!): AuthType!
-  createUser(data: CreateUserInput!): User!
-  updateUser(id: Float!, data: UpdateUserInput!): User!
+  createUser(data: CreateUserInput!): Users!
+  updateUser(id: Float!, data: UpdateUserInput!): Users!
   deleteUser(id: Float!): Boolean!
+  createRegister(data: CreateTimeRegisteredInput!): RegisteredTimes!
+  updateRegister(id: Float!, data: UpdateRegisteredTimeInput!): RegisteredTimes!
+  deleteRegister(id: Float!): Boolean!
 }
 
 input AuthInput {
@@ -49,4 +72,16 @@ input UpdateUserInput {
   email: String
   password: String
   role: ERole
+}
+
+input CreateTimeRegisteredInput {
+  user_id: Float!
+  time_registered: DateTime!
+  time_types: EtimeTypes!
+}
+
+input UpdateRegisteredTimeInput {
+  user_id: Float!
+  time_registered: DateTime!
+  time_types: EtimeTypes
 }

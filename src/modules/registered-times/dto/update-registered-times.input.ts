@@ -3,7 +3,7 @@ import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { EtimeTypes } from '../entities/registered-times.entity';
 
 @InputType()
-export class UpdateRegisteredTime {
+export class UpdateRegisteredTimeInput {
   @IsOptional()
   @IsNotEmpty({ message: 'Not null Id_User' })
   user_id: number;

@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { ERole, User } from './entities/user.entity';
+import { ERole, Users } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UseGuards } from '@nestjs/common';
@@ -14,35 +14,35 @@ export class UsersResolver {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(ERole.EMPLOYEE)
-  @Query(() => [User])
-  async usersAll(): Promise<User[]> {
+  @Query(() => [Users])
+  async usersAll(): Promise<Users[]> {
     const users = await this.usersService.findAllUsers();
     return users;
   }
 
-  @Query(() => User)
-  async userById(@Args('id') id: number): Promise<User> {
+  @Query(() => Users)
+  async userById(@Args('id') id: number): Promise<Users> {
     const user = this.usersService.getUserById(id);
     return user;
   }
 
-  @Query(() => User)
-  async userByEmail(@Args('email') email: string): Promise<User> {
+  @Query(() => Users)
+  async userByEmail(@Args('email') email: string): Promise<Users> {
     const user = this.usersService.getUserByEmail(email);
     return user;
   }
 
-  @Mutation(() => User)
-  async createUser(@Args('data') data: CreateUserInput): Promise<User> {
+  @Mutation(() => Users)
+  async createUser(@Args('data') data: CreateUserInput): Promise<Users> {
     const user = await this.usersService.createUser(data);
     return user;
   }
 
-  @Mutation(() => User)
+  @Mutation(() => Users)
   async updateUser(
     @Args('id') id: number,
     @Args('data') data: UpdateUserInput,
-  ): Promise<User> {
+  ): Promise<Users> {
     const user = this.usersService.updateUser(id, data);
     return user;
   }

@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { UsersService } from '../users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../users/entities/user.entity';
+import { Users } from '../users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 // import { LocalStrategy } from './strategy/local.strategy';
@@ -12,7 +12,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Users]),
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: jwtConstants.secret,
