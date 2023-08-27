@@ -4,7 +4,7 @@ import { AuthInput } from './dto/auth.input';
 import { AuthType } from './dto/auth.type';
 import { User } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { compareSync } from 'bcrypt';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -15,9 +15,9 @@ export class AuthService {
 
   async validadeUser(data: AuthInput): Promise<AuthType> {
     const user = await this.userService.getUserByEmail(data.email);
-    const validatePassword = compareSync(data.password, user.password);
+    const validatePassword = await compare(data.password, user.password);
     if (!validatePassword) {
-      throw new UnauthorizedException('Incorrect User or password');
+      throw new UnauthorizedException('Incorrect User or Password');
     }
     const token = await this.jwtToken(user);
     return {

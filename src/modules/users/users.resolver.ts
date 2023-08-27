@@ -1,17 +1,19 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { ERole, User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
-// import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { UseGuards } from '@nestjs/common';
-import { AdminAuthGuard } from '../auth/guard/admin-auth.guard';
-// import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 @Resolver('User')
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
-  @UseGuards(AdminAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.EMPLOYEE)
   @Query(() => [User])
   async usersAll(): Promise<User[]> {
     const users = await this.usersService.findAllUsers();
@@ -36,18 +38,18 @@ export class UsersResolver {
     return user;
   }
 
-  // @Mutation(() => User)
-  // async updateUser(
-  //   @Args('id') id: number,
-  //   @Args('data') data: UpdateUserInput,
-  // ): Promise<User> {
-  //   const user = this.usersService.updateUser(id, data);
-  //   return user;
-  // }
+  @Mutation(() => User)
+  async updateUser(
+    @Args('id') id: number,
+    @Args('data') data: UpdateUserInput,
+  ): Promise<User> {
+    const user = this.usersService.updateUser(id, data);
+    return user;
+  }
 
-  // @Mutation(() => Boolean)
-  // async deleteUser(@Args('id') id: number): Promise<boolean> {
-  //   const deleted = await this.usersService.deleteUser(id);
-  //   return deleted;
-  // }
+  @Mutation(() => Boolean)
+  async deleteUser(@Args('id') id: number): Promise<boolean> {
+    const deleted = await this.usersService.deleteUser(id);
+    return deleted;
+  }
 }
