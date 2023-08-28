@@ -2,7 +2,6 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  // UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -51,14 +50,14 @@ export class UsersService {
 
   async updateUser(id: number, data: UpdateUserInput): Promise<Users> {
     const user = await this.getUserById(id);
-    await this.userRepository.update(user, { ...data });
+    await this.userRepository.update(user.id, { ...data });
     const userUpdated = this.userRepository.create({ ...user, ...data });
     return userUpdated;
   }
 
   async deleteUser(id: number): Promise<boolean> {
     const user = await this.getUserById(id);
-    const deleted = await this.userRepository.delete(user);
+    const deleted = await this.userRepository.delete(user.id);
     if (deleted) {
       return true;
     }

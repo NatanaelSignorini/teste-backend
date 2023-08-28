@@ -4,20 +4,20 @@
 
 type RegisteredTimes {
   id: ID!
-  time_types: EtimeTypes!
-  user_id: Float!
+  user: Users!
   time_registered: DateTime!
-}
-
-enum EtimeTypes {
-  In
-  Out
+  time_types: EtimeTypes!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+enum EtimeTypes {
+  In
+  Out
+}
 
 type Users {
   id: ID!
@@ -74,4 +74,8 @@ input UpdateUserInput {
 
 input CreateTimeRegisteredInput {
   time_registered: DateTime!
+}
+
+type Subscription {
+  registeredTimeAdded: RegisteredTimes!
 }

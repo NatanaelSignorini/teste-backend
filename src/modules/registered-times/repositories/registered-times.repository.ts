@@ -9,7 +9,7 @@ export class RegisteredTimesRepository extends Repository<RegisteredTimes> {
   }
   async getLatestRegisteredTimeByUserId(userId: number) {
     return this.createQueryBuilder()
-      .where({ user_id: userId })
+      .where({ user: { id: userId } })
       .orderBy('time_registered', 'DESC')
       .getOne();
   }

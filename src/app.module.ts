@@ -17,6 +17,7 @@ import { RegisteredTimesModule } from './modules/registered-times/registered-tim
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       context: ({ req }) => ({ req }),
+      installSubscriptionHandlers: true,
     }),
     AuthModule,
     UsersModule,

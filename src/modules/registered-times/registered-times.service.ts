@@ -10,6 +10,7 @@ import {
 
 import { CreateTimeRegisteredInput } from './dto/create-registered-times.input';
 import { RegisteredTimesRepository } from './repositories/registered-times.repository';
+import { Users } from '../users/entities/user.entity';
 
 @Injectable()
 export class RegisteredTimesService {
@@ -21,9 +22,9 @@ export class RegisteredTimesService {
   ): Promise<RegisteredTimes> {
     const lastRegisteredTime =
       await this.registeredTimes.getLatestRegisteredTimeByUserId(userId);
-
     if (
-      lastRegisteredTime.time_registered.getTime() >= time_registered.getTime()
+      lastRegisteredTime?.time_registered?.getTime() >=
+      time_registered?.getTime()
     ) {
       throw new BadRequestException('Data precisa ser maior que anterior');
     }
@@ -34,7 +35,7 @@ export class RegisteredTimesService {
         : EtimeTypes.In;
 
     const registeredTime = await this.registeredTimes.save({
-      user_id: userId,
+      user: { id: userId },
       time_types: type,
       time_registered,
     });
@@ -43,19 +44,23 @@ export class RegisteredTimesService {
       throw new InternalServerErrorException('Falha ao criar registro');
     }
 
-    return registeredTime;
+    return this.registeredTimes.findOne({
+      where: { id: registeredTime.id },
+      relations: { user: true },
+    });
   }
 
   async findAllRegisters(): Promise<RegisteredTimes[]> {
-    const registeredTimes = await this.registeredTimes.find();
+    const registeredTimes = await this.registeredTimes.find({
+      relations: { user: true },
+    });
     return registeredTimes;
   }
 
-  async findAllRegisterByUserId(userId: number): Promise<RegisteredTimes[]> {
+  async findAllRegisterByUserId(user: Users): Promise<RegisteredTimes[]> {
     const registeredTimes = await this.registeredTimes.find({
-      where: {
-        user_id: userId,
-      },
+      where: { user: { id: user.id } },
+      relations: { user: true },
     });
 
     return registeredTimes;

@@ -5,9 +5,15 @@ import {
   HideField,
   registerEnumType,
 } from '@nestjs/graphql';
-import { RegisteredTimes } from 'src/modules/registered-times/entities/registered-times.entity';
-import { encodePassword } from 'src/utils/bcrypt';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { RegisteredTimes } from '../../../modules/registered-times/entities/registered-times.entity';
+import { encodePassword } from '../../../utils/bcrypt';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum ERole {
   ADMIN = 'admin',
@@ -39,6 +45,13 @@ export class Users {
   @Field(() => ERole)
   role: ERole;
 
-  @OneToMany(() => RegisteredTimes, (registeredTime) => registeredTime.user_id)
+  @OneToMany(() => RegisteredTimes, (registeredTime) => registeredTime.user, {
+    cascade: true,
+  })
   registeredtimes: RegisteredTimes[];
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase();
+  }
 }

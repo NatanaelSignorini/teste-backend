@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { RegisteredTimesService } from './registered-times.service';
 import { RegisteredTimes } from './entities/registered-times.entity';
 import { CreateTimeRegisteredInput } from './dto/create-registered-times.input';
@@ -8,7 +8,11 @@ import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { ERole, Users } from '../users/entities/user.entity';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-// import { UpdateRegisteredTimeInput } from './dto/update-registered-times.input';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubSub = new PubSub();
+
+const REGISTERED_TIMES = 'registeredTimeAdded';
 
 @Resolver(() => RegisteredTimes)
 export class RegisteredTimesResolver {
@@ -29,7 +33,7 @@ export class RegisteredTimesResolver {
   async registeredTimesByUser(
     @CurrentUser() user: Users,
   ): Promise<RegisteredTimes[]> {
-    return await this.registeredTimesService.findAllRegisterByUserId(user.id);
+    return await this.registeredTimesService.findAllRegisterByUserId(user);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -39,6 +43,22 @@ export class RegisteredTimesResolver {
     @Args('data') data: CreateTimeRegisteredInput,
     @CurrentUser() user: Users,
   ): Promise<RegisteredTimes> {
-    return this.registeredTimesService.createRegister(user.id, data);
+    const registeredTime = await this.registeredTimesService.createRegister(
+      user.id,
+      data,
+    );
+    pubSub.publish(REGISTERED_TIMES, {
+      registeredTimeAdded: registeredTime,
+    });
+    return registeredTime;
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.ADMIN)
+  @Subscription(() => RegisteredTimes, {
+    name: REGISTERED_TIMES,
+  })
+  registeredTimesAdded() {
+    return pubSub.asyncIterator(REGISTERED_TIMES);
   }
 }

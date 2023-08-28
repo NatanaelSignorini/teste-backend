@@ -4,10 +4,6 @@ import { EtimeTypes } from '../entities/registered-times.entity';
 
 @InputType()
 export class UpdateRegisteredTimeInput {
-  @IsOptional()
-  @IsNotEmpty({ message: 'Not null Id_User' })
-  user_id: number;
-
   @IsNotEmpty({ message: 'Not null DataTime' })
   time_registered: Date;
 

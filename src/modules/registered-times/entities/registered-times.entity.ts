@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { Users } from 'src/modules/users/entities/user.entity';
+import { Users } from '../../../modules/users/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum EtimeTypes {
@@ -18,11 +18,12 @@ export class RegisteredTimes {
   @Field(() => ID)
   id: number;
 
-  @Column({ type: 'int' })
-  @ManyToOne(() => Users, (user) => user.id)
-  user_id: number;
+  @ManyToOne(() => Users, (user) => user.registeredtimes, { eager: true })
+  @Field()
+  user: Users;
 
   @Column({ type: 'timestamptz' })
+  @Field()
   time_registered: Date;
 
   @Column({ type: 'varchar', length: 45, nullable: false })
