@@ -41,8 +41,8 @@ type Query {
   usersAll: [Users!]!
   userById(id: Float!): Users!
   userByEmail(email: String!): Users!
-  registeredTimesById(id: Float!): RegisteredTimes!
   registeredTimesAll: [RegisteredTimes!]!
+  registeredTimesByUser: [RegisteredTimes!]!
 }
 
 type Mutation {
@@ -73,7 +73,5 @@ input UpdateUserInput {
 }
 
 input CreateTimeRegisteredInput {
-  user_id: Float!
   time_registered: DateTime!
-  time_types: EtimeTypes!
 }

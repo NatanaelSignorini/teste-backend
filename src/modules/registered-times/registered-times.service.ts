@@ -1,69 +1,63 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
-import { RegisteredTimes } from './entities/registered-times.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UpdateRegisteredTimeInput } from './dto/update-registered-times.input';
+import {
+  EtimeTypes,
+  RegisteredTimes,
+} from './entities/registered-times.entity';
+
 import { CreateTimeRegisteredInput } from './dto/create-registered-times.input';
+import { RegisteredTimesRepository } from './repositories/registered-times.repository';
 
 @Injectable()
 export class RegisteredTimesService {
-  //injeta o repositório utilizando a entidade de register
-  constructor(
-    @InjectRepository(RegisteredTimes)
-    private userRepository: Repository<RegisteredTimes>,
-  ) {}
+  constructor(private registeredTimes: RegisteredTimesRepository) {}
 
-  //método para criar o register
   async createRegister(
-    data: CreateTimeRegisteredInput,
+    userId: number,
+    { time_registered }: CreateTimeRegisteredInput,
   ): Promise<RegisteredTimes> {
-    const registered_time = this.userRepository.create(data);
-    const SavedRegister = await this.userRepository.save(registered_time);
-    if (!SavedRegister) {
+    const lastRegisteredTime =
+      await this.registeredTimes.getLatestRegisteredTimeByUserId(userId);
+
+    if (
+      lastRegisteredTime.time_registered.getTime() >= time_registered.getTime()
+    ) {
+      throw new BadRequestException('Data precisa ser maior que anterior');
+    }
+
+    const type =
+      lastRegisteredTime?.time_types == EtimeTypes.In
+        ? EtimeTypes.Out
+        : EtimeTypes.In;
+
+    const registeredTime = await this.registeredTimes.save({
+      user_id: userId,
+      time_types: type,
+      time_registered,
+    });
+
+    if (!registeredTime) {
       throw new InternalServerErrorException('Falha ao criar registro');
     }
-    return SavedRegister;
+
+    return registeredTime;
   }
 
   async findAllRegisters(): Promise<RegisteredTimes[]> {
-    const registered_time = await this.userRepository.find();
-    return registered_time;
+    const registeredTimes = await this.registeredTimes.find();
+    return registeredTimes;
   }
 
-  //método para trazer um registro pelo id
-  async findRegisterById(id: number): Promise<RegisteredTimes> {
-    const registered_time = await this.userRepository.findOneBy({ id });
-    if (!registered_time) {
-      throw new NotFoundException('registro nao encontrado');
-    }
-    return registered_time;
-  }
-
-  //método para alterar o registro ponto
-  async updateRegister(
-    id: number,
-    data: UpdateRegisteredTimeInput,
-  ): Promise<RegisteredTimes> {
-    const registered_time = await this.findRegisterById(id);
-    await this.userRepository.update(registered_time, { ...data });
-    const registered_timeUpdated = this.userRepository.create({
-      ...registered_time,
-      ...data,
+  async findAllRegisterByUserId(userId: number): Promise<RegisteredTimes[]> {
+    const registeredTimes = await this.registeredTimes.find({
+      where: {
+        user_id: userId,
+      },
     });
-    return registered_timeUpdated;
-  }
 
-  //método para exclusão do registro ponto
-  async removeRegister(id: number): Promise<boolean> {
-    const registered_time = await this.findRegisterById(id);
-    const deleted = await this.userRepository.delete(registered_time);
-    if (deleted) {
-      return true;
-    }
-    return false;
+    return registeredTimes;
   }
 }

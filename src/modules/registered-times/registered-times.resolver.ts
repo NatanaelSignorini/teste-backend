@@ -6,7 +6,8 @@ import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { ERole } from '../users/entities/user.entity';
+import { ERole, Users } from '../users/entities/user.entity';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 // import { UpdateRegisteredTimeInput } from './dto/update-registered-times.input';
 
 @Resolver(() => RegisteredTimes)
@@ -14,13 +15,6 @@ export class RegisteredTimesResolver {
   constructor(
     private readonly registeredTimesService: RegisteredTimesService,
   ) {}
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ERole.EMPLOYEE)
-  @Query(() => RegisteredTimes)
-  async registeredTimesById(@Args('id') id: number): Promise<RegisteredTimes> {
-    return this.registeredTimesService.findRegisterById(id);
-  }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(ERole.ADMIN)
@@ -31,24 +25,20 @@ export class RegisteredTimesResolver {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(ERole.EMPLOYEE)
+  @Query(() => [RegisteredTimes])
+  async registeredTimesByUser(
+    @CurrentUser() user: Users,
+  ): Promise<RegisteredTimes[]> {
+    return await this.registeredTimesService.findAllRegisterByUserId(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.EMPLOYEE)
   @Mutation(() => RegisteredTimes)
   async createRegister(
     @Args('data') data: CreateTimeRegisteredInput,
+    @CurrentUser() user: Users,
   ): Promise<RegisteredTimes> {
-    return this.registeredTimesService.createRegister(data);
+    return this.registeredTimesService.createRegister(user.id, data);
   }
-
-  // @Mutation(() => RegisteredTimes)
-  // async updateRegister(
-  //   @Args('id') id: number,
-  //   @Args('data') data: UpdateRegisteredTimeInput,
-  // ): Promise<RegisteredTimes> {
-  //   return this.registeredTimesService.updateRegister(id, data);
-  // }
-
-  // @Mutation(() => Boolean)
-  // async deleteRegister(@Args('id') id: number): Promise<true> {
-  //   await this.registeredTimesService.removeRegister(id);
-  //   return true;
-  // }
 }
