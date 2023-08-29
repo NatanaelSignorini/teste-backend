@@ -29,16 +29,13 @@ $ yarn run test
 ## Folder Structure
 
 ```
-project
+teste-backend-brainny
 ├── README.md
 ├── nest-cli.json
 ├── package-lock.json
 ├── package.json
 ├── src
 │   ├── app.module.ts
-│   ├── common
-│   │   └── test
-│   │       └── TestUtil.ts
 │   ├── config
 │   │   ├── database.module.ts
 │   │   └── jwt.module.ts
@@ -105,5 +102,24 @@ project
 ├── tsconfig.json
 └── yarn.lock
 
-
 ```
+Server folder has some folders:
+* config - for configuration files
+* controllers - for controllers
+* helpers - for helpers files like a class for Api Errors
+* middlewares - for middlewares like validation, response...
+* models - for models (king, knight, queen...)
+* routes - for express routes
+
+### 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [NestJs](https://nestjs.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [TypeOrm](https://typeorm.io/)
+- [Postegres](https://www.postgresql.org/)
+
+
+
+
