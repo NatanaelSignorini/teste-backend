@@ -71,6 +71,7 @@ describe('UserService', () => {
       expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
     });
   });
+
   describe('When create user', () => {
     it('should create a user', async () => {
       const user = UserMocks.giveAMeAValidUser();
@@ -97,6 +98,7 @@ describe('UserService', () => {
       expect(mockRepository.save).toBeCalledTimes(1);
     });
   });
+
   describe('When update User', () => {
     it('Should update a user', async () => {
       const user = UserMocks.giveAMeAValidUser();
