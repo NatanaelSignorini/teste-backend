@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from '../users/users.service';
-import UserMocks from './test/__mock__/user';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { UsersService } from '../../users/users.service';
+import UserMocks from './__mock__/user';
+import { AuthService } from '../auth.service';
+import { JwtStrategy } from '../strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { jwtConstants } from '../constants';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('UserService', () => {
