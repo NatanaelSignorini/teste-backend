@@ -1,25 +1,8 @@
-Título e Descrição
-
-## Nome do Projeto
+## Name Project
 
 ```
-Projeto teste
-
+Teste Backend
 ```
-
-Projeto teste
-
-## Descrição do Projeto
-
-Status do Projeto
-Tabela de Conteúdos
-Features
-Demonstração da Aplicação
-Pré-requisitos e como rodar a aplicação/testes
-Tecnologias utilizadas
-Contribuição
-Autor
-Licença
 
 ## Description
 
@@ -74,7 +57,5 @@ project
     │   Dockerfile
     │   package.json
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
 ```
