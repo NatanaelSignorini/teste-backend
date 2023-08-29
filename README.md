@@ -103,22 +103,22 @@ teste-backend-brainny
 └── yarn.lock
 
 ```
-Server folder has some folders:
-* config - for configuration files
-* controllers - for controllers
-* helpers - for helpers files like a class for Api Errors
-* middlewares - for middlewares like validation, response...
-* models - for models (king, knight, queen...)
-* routes - for express routes
+Project folder has some folders:
+* config - for configuration files database and Jwt
+* modules - contains the auth user and registered-times modules
+* utils - contains file to encode password 
 
-### 🛠 Tecnologias
 
-As seguintes ferramentas foram usadas na construção do projeto:
+### 🛠 Technologies
+
+The following tools were used in building the project:
 
 - [NestJs](https://nestjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [TypeOrm](https://typeorm.io/)
 - [Postegres](https://www.postgresql.org/)
+
+### author
 
 
 
