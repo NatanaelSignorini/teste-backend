@@ -9,7 +9,7 @@
 ## Installation
 
 ```bash
-# install depencies
+# installation of dependencies
 $ yarn install or npm install
 ```
 
@@ -123,8 +123,6 @@ The following tools were used in building the project:
 - [GraphQL](https://graphql.org/)
 
 
-
-### author
 
 
 
