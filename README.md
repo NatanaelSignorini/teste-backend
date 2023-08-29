@@ -9,21 +9,22 @@
 ## Installation
 
 ```bash
-$ yarn install
+# install depencies
+$ yarn install or npm install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ yarn run start
+$ yarn run start or npm run start
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn run test
+$ yarn run test or npm run start
 ```
 
 ## Folder Structure
@@ -105,11 +106,11 @@ teste-backend-brainny
 ```
 Project folder has some folders:
 * config - for configuration files database and Jwt
-* modules - contains the auth user and registered-times modules
+* modules - contains the auth, user and registered-times
 * utils - contains file to encode password 
 
 
-### 🛠 Technologies
+###  Technologies
 
 The following tools were used in building the project:
 
@@ -117,6 +118,11 @@ The following tools were used in building the project:
 - [TypeScript](https://www.typescriptlang.org/)
 - [TypeOrm](https://typeorm.io/)
 - [Postegres](https://www.postgresql.org/)
+- [Bcrypt](https://www.npmjs.com/package/bcrypt)
+- [Jwt](https://jwt.io/)
+- [GraphQL](https://graphql.org/)
+
+
 
 ### author
 
