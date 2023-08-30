@@ -10,18 +10,18 @@ import {
 
 import { CreateTimeRegisteredInput } from './dto/create-registered-times.input';
 import { RegisteredTimesRepository } from './repositories/registered-times.repository';
-import { Users } from '../users/entities/user.entity';
+import { ERole, Users } from '../users/entities/user.entity';
 
 @Injectable()
 export class RegisteredTimesService {
   constructor(private registeredTimes: RegisteredTimesRepository) {}
 
   async createRegister(
-    userId: number,
+    user: Users,
     { time_registered }: CreateTimeRegisteredInput,
   ): Promise<RegisteredTimes> {
     const lastRegisteredTime =
-      await this.registeredTimes.getLatestRegisteredTimeByUserId(userId);
+      await this.registeredTimes.getLatestRegisteredTimeByUserId(user.id);
     if (
       lastRegisteredTime?.time_registered?.getTime() >=
       time_registered?.getTime()
@@ -35,7 +35,7 @@ export class RegisteredTimesService {
         : EtimeTypes.In;
 
     const registeredTime = await this.registeredTimes.save({
-      user: { id: userId },
+      user,
       time_types: type,
       time_registered,
     });
@@ -50,8 +50,11 @@ export class RegisteredTimesService {
     });
   }
 
-  async findAllRegisters(): Promise<RegisteredTimes[]> {
+  async findAllEmployeeRegisters(): Promise<RegisteredTimes[]> {
     const registeredTimes = await this.registeredTimes.find({
+      where: {
+        user: { role: ERole.EMPLOYEE },
+      },
       relations: { user: true },
     });
     return registeredTimes;

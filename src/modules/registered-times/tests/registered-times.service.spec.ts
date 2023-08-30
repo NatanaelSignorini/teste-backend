@@ -1,30 +1,36 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { RegisteredTimesService } from '../registered-times.service';
-import { RegisteredTimes } from '../entities/registered-times.entity';
+
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { RegisteredTimesRepository } from '../repositories/registered-times.repository';
 import RegisteredTimesMocks from './__mock__/registered-times';
-import { Users } from 'src/modules/users/entities/user.entity';
-import { NotFoundException } from '@nestjs/common';
+import { ERole } from '../../users/entities/user.entity';
+import { EtimeTypes } from '../entities/registered-times.entity';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 describe('RegisteredTimesService', () => {
   let service: RegisteredTimesService;
 
   const mockRegisteredTimesRepository = {
     find: jest.fn(),
-    createRegister: jest.fn(),
-    findAllRegisters: jest.fn(),
-    findAllRegisterByUserId: jest.fn(),
+    findOne: jest.fn(),
+    create: jest.fn(),
+    save: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+    getLatestRegisteredTimeByUserId: jest.fn(),
   };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RegisteredTimesService,
-        RegisteredTimesRepository,
         {
-          provide: getRepositoryToken(RegisteredTimes),
+          provide: getRepositoryToken(RegisteredTimesRepository),
           useValue: mockRegisteredTimesRepository,
         },
       ],
@@ -34,71 +40,201 @@ describe('RegisteredTimesService', () => {
   });
 
   beforeEach(() => {
-    mockRegisteredTimesRepository.createRegister.mockReset();
-    mockRegisteredTimesRepository.findAllRegisters.mockReset();
-    mockRegisteredTimesRepository.findAllRegisterByUserId.mockReset();
+    mockRegisteredTimesRepository.find.mockReset();
+    mockRegisteredTimesRepository.findOne.mockReset();
+    mockRegisteredTimesRepository.create.mockReset();
+    mockRegisteredTimesRepository.save.mockReset();
+    mockRegisteredTimesRepository.update.mockReset();
+    mockRegisteredTimesRepository.delete.mockReset();
+    mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId.mockReset();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  // describe('When search All Registered Times', () => {
-  //   it('should be list all registered times', async () => {
-  //     const registered = RegisteredTimesMocks.giveAMeAValidRegisteredTimes();
-  //     mockRegisteredTimesRepository.find.mockReturnValue([
-  //       registered,
-  //       registered,
-  //     ]);
-  //     const registereds = await service.findAllRegisters();
-  //     expect(registereds).toHaveLength(2);
-  //     expect(mockRegisteredTimesRepository.find).toHaveBeenCalledTimes(1);
-  //   });
-  // });
+  describe('Admin Role', () => {
+    describe('When search All Registered Times', () => {
+      it('should be list all registered times', async () => {
+        const registeredTimes =
+          RegisteredTimesMocks.giveAnArrayOfEmployeesRegisteredTimes();
+        mockRegisteredTimesRepository.find.mockReturnValue(registeredTimes);
+        const registeres = await service.findAllEmployeeRegisters();
+        expect(registeres).toHaveLength(10);
+        expect(mockRegisteredTimesRepository.find).toHaveBeenCalledTimes(1);
+        expect(mockRegisteredTimesRepository.find).toHaveBeenCalledWith({
+          where: {
+            user: { role: ERole.EMPLOYEE },
+          },
+          relations: { user: true },
+        });
+      });
+    });
+  });
 
-  // describe('When serch Registered Times By Id', () => {
-  //   it('should find a existing registered times', async () => {
-  //     const registered = RegisteredTimesMocks.giveAMeAValidRegisteredTimes();
-  //     mockRegisteredTimesRepository.findAllRegisterByUserId.mockReturnValue(
-  //       registered,
-  //     );
-  //     const userFound = await service.findAllRegisterByUserId(user: Users);
-  //     expect(userFound).toMatchObject({ name: registered.user.id });
-  //     expect(
-  //       mockRegisteredTimesRepository.findAllRegisterByUserId,
-  //     ).toHaveBeenCalledTimes(1);
-  //   });
-  //   it('should return a exception when does not to find a registered times', async () => {
-  //     mockRegisteredTimesRepository.findAllRegisterByUserId.mockReturnValue(null);
-  //     expect(service.findAllRegisterByUserId(user: Users)).rejects.toBeInstanceOf(NotFoundException);
-  //     expect(mockRegisteredTimesRepository.findAllRegisterByUserId).toHaveBeenCalledTimes(1);
-  //   });
-  // });
+  describe('When serch Registered Times By Id', () => {
+    it('should find the employee registered times', async () => {
+      const registeredUserTimes =
+        RegisteredTimesMocks.giveAnArrayOfEmployeeRegisteredTimes();
+      mockRegisteredTimesRepository.find.mockReturnValue(registeredUserTimes);
+      const registeredTimes = await service.findAllRegisterByUserId(
+        registeredUserTimes[0].user,
+      );
 
-  // describe('When create resgitered times', () => {
-  //   it('should create a resgitered times', async () => {
-  //     const user = UserMocks.giveAMeAValidUser();
-  //     mockRepository.save.mockReturnValue(user);
-  //     mockRepository.create.mockReturnValue(user);
-  //     const savedUser = await service.createUser(user);
+      expect(registeredTimes).toHaveLength(10);
+      expect(mockRegisteredTimesRepository.find).toHaveBeenCalledTimes(1);
+      expect(mockRegisteredTimesRepository.find).toHaveBeenCalledWith({
+        where: { user: { id: registeredUserTimes[0].user.id } },
+        relations: { user: true },
+      });
+    });
 
-  //     expect(savedUser).toMatchObject(user);
-  //     expect(mockRepository.create).toBeCalledTimes(1);
-  //     expect(mockRepository.save).toBeCalledTimes(1);
-  //   });
-  //   it('should return a exception when doesnt create a user', async () => {
-  //     const user = UserMocks.giveAMeAValidUser();
-  //     mockRepository.save.mockReturnValue(null);
-  //     mockRepository.create.mockReturnValue(user);
+    it('should return empty when the employee have not registered yet', async () => {
+      mockRegisteredTimesRepository.find.mockReturnValue([]);
+      const user = RegisteredTimesMocks.giveAMeAValidEmployee();
+      const registeredTimes = await service.findAllRegisterByUserId(user);
+      expect(mockRegisteredTimesRepository.find).toHaveBeenCalledWith({
+        where: { user: { id: user.id } },
+        relations: { user: true },
+      });
+      expect(registeredTimes).toHaveLength(0);
+      expect(mockRegisteredTimesRepository.find).toHaveBeenCalledTimes(1);
+    });
+  });
 
-  //     await service.createUser(user).catch((e) => {
-  //       expect(e).toBeInstanceOf(InternalServerErrorException);
-  //       expect(e).toMatchObject({
-  //         message: 'Problem to create a user. Try again',
-  //       });
-  //     });
-  //     expect(mockRepository.create).toBeCalledTimes(1);
-  //     expect(mockRepository.save).toBeCalledTimes(1);
-  //   });
-  // });
+  describe('When create resgitered times', () => {
+    it('should create a registered times', async () => {
+      const user = RegisteredTimesMocks.giveAMeAValidEmployee();
+
+      const lastUserRegisteredTime =
+        RegisteredTimesMocks.giveAMeAValidRegisteredTime();
+
+      const newRegisteredTime =
+        RegisteredTimesMocks.giveAMeAValidRegisteredTimeGreaterThan(
+          lastUserRegisteredTime.time_registered,
+          user,
+        );
+
+      mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId.mockReturnValue(
+        lastUserRegisteredTime,
+      );
+
+      mockRegisteredTimesRepository.save.mockReturnValue(newRegisteredTime);
+
+      mockRegisteredTimesRepository.findOne.mockReturnValue(newRegisteredTime);
+
+      const savedRegisteredTime = await service.createRegister(user, {
+        time_registered: newRegisteredTime.time_registered,
+      });
+
+      expect(savedRegisteredTime).toMatchObject(newRegisteredTime);
+      expect(
+        mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId,
+      ).toBeCalledTimes(1);
+      expect(mockRegisteredTimesRepository.save).toBeCalledTimes(1);
+      expect(mockRegisteredTimesRepository.findOne).toBeCalledTimes(1);
+
+      expect(
+        mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId,
+      ).toHaveBeenCalledWith(user.id);
+      expect(mockRegisteredTimesRepository.save).toHaveBeenCalledWith({
+        user,
+        time_types: EtimeTypes.Out,
+        time_registered: newRegisteredTime.time_registered,
+      });
+      expect(mockRegisteredTimesRepository.findOne).toHaveBeenCalledWith({
+        where: { id: newRegisteredTime.id },
+        relations: { user: true },
+      });
+    });
+
+    it('should throw an error when registered time is earlier than last registered time', async () => {
+      const user = RegisteredTimesMocks.giveAMeAValidEmployee();
+
+      const lastUserRegisteredTime =
+        RegisteredTimesMocks.giveAMeAValidRegisteredTime();
+
+      const newRegisteredTime =
+        RegisteredTimesMocks.giveAMeAValidRegisteredTimeLessThan(
+          lastUserRegisteredTime.time_registered,
+          user,
+        );
+
+      mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId.mockReturnValue(
+        lastUserRegisteredTime,
+      );
+
+      mockRegisteredTimesRepository.save.mockReturnValue({});
+
+      mockRegisteredTimesRepository.findOne.mockReturnValue({});
+
+      try {
+        await service.createRegister(user, {
+          time_registered: newRegisteredTime.time_registered,
+        });
+      } catch (error) {
+        expect(error).toBeInstanceOf(BadRequestException);
+        expect(error).toMatchObject({
+          message: 'Date needs to be greater than previous',
+        });
+
+        expect(
+          mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId,
+        ).toBeCalledTimes(1);
+        expect(mockRegisteredTimesRepository.save).toBeCalledTimes(0);
+        expect(mockRegisteredTimesRepository.findOne).toBeCalledTimes(0);
+
+        expect(
+          mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId,
+        ).toHaveBeenCalledWith(user.id);
+      }
+    });
+
+    it('should throw an error when failed to create record', async () => {
+      const user = RegisteredTimesMocks.giveAMeAValidEmployee();
+
+      const lastUserRegisteredTime =
+        RegisteredTimesMocks.giveAMeAValidRegisteredTime();
+
+      const newRegisteredTime =
+        RegisteredTimesMocks.giveAMeAValidRegisteredTimeGreaterThan(
+          lastUserRegisteredTime.time_registered,
+          user,
+        );
+
+      mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId.mockReturnValue(
+        lastUserRegisteredTime,
+      );
+
+      mockRegisteredTimesRepository.save.mockReturnValue(false);
+
+      mockRegisteredTimesRepository.findOne.mockReturnValue({});
+
+      try {
+        await service.createRegister(user, {
+          time_registered: newRegisteredTime.time_registered,
+        });
+      } catch (error) {
+        expect(error).toBeInstanceOf(InternalServerErrorException);
+        expect(error).toMatchObject({
+          message: 'Failed to create record',
+        });
+
+        expect(
+          mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId,
+        ).toBeCalledTimes(1);
+        expect(mockRegisteredTimesRepository.save).toBeCalledTimes(1);
+        expect(mockRegisteredTimesRepository.findOne).toBeCalledTimes(0);
+
+        expect(
+          mockRegisteredTimesRepository.getLatestRegisteredTimeByUserId,
+        ).toHaveBeenCalledWith(user.id);
+        expect(mockRegisteredTimesRepository.save).toHaveBeenCalledWith({
+          user,
+          time_types: EtimeTypes.Out,
+          time_registered: newRegisteredTime.time_registered,
+        });
+      }
+    });
+  });
 });

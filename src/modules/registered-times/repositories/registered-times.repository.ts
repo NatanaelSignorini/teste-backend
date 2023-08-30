@@ -7,7 +7,9 @@ export class RegisteredTimesRepository extends Repository<RegisteredTimes> {
   constructor(dataSource: DataSource) {
     super(RegisteredTimes, dataSource.createEntityManager());
   }
-  async getLatestRegisteredTimeByUserId(userId: number) {
+  async getLatestRegisteredTimeByUserId(
+    userId: number,
+  ): Promise<RegisteredTimes> {
     return this.createQueryBuilder()
       .where({ user: { id: userId } })
       .orderBy('time_registered', 'DESC')

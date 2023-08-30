@@ -24,7 +24,7 @@ export class RegisteredTimesResolver {
   @Roles(ERole.ADMIN)
   @Query(() => [RegisteredTimes])
   async registeredTimesAll(): Promise<RegisteredTimes[]> {
-    return await this.registeredTimesService.findAllRegisters();
+    return await this.registeredTimesService.findAllEmployeeRegisters();
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -44,7 +44,7 @@ export class RegisteredTimesResolver {
     @CurrentUser() user: Users,
   ): Promise<RegisteredTimes> {
     const registeredTime = await this.registeredTimesService.createRegister(
-      user.id,
+      user,
       data,
     );
     pubSub.publish(REGISTERED_TIMES, {
