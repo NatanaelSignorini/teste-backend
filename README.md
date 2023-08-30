@@ -7,20 +7,25 @@
 ```
 
 ## Prerequisites
+
 You will need Docker. So if don't have Docker click [Here](https://docs.docker.com/install/) and install it.
 With Docker installed, clone this repository and open it. In terminal type:
+
 ```bash
 # installation database
 docker-compose up --build
 
 ```
+
 ## Install Dependecies
+
 ```bash
 # installation of dependencies
 $ yarn install or npm install
 ```
 
 ## Running the Project
+
 ```bash
 # development
 $ yarn run start or npm run start
@@ -119,7 +124,7 @@ Project folder has some folders:
 - modules - contains the auth, user and registered-times
 - utils - contains file to encode password
 
-### Technologies
+### Built With
 
 The following tools were used in building the project:
 
@@ -131,3 +136,7 @@ The following tools were used in building the project:
 - [Jwt](https://jwt.io/) - The JSON Web Tokens used
 - [GraphQL](https://graphql.org/) - The GraphQL used
 - [Docker](https://www.docker.com/) - The Docker used
+
+### Tests Api Insomnia
+
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Tests%20Api&uri=https%3A%2F%2Fraw.githubusercontent.com%2FNatanaelSignorini%2Fteste-backend%2Fmain%2FInsomniaTest.json)
