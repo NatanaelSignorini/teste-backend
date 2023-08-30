@@ -2,11 +2,14 @@
 
 ## Description
 
-```
+Api de sistema para o gerenciamento de registros de Ponto dos colaboradores de uma empresa.
 
-```
+System API for the management of time records of employees of a company.
 
 ## Prerequisites
+
+Você precisará do Docker. Então se não tiver o Docker clique [Aqui](https://docs.docker.com/install/) e instale-o.
+Com o Docker instalado, clone este repositório e abra-o. No terminal:
 
 You will need Docker. So if don't have Docker click [Here](https://docs.docker.com/install/) and install it.
 With Docker installed, clone this repository and open it. In terminal type:
@@ -121,6 +124,12 @@ teste-backend
 
 ```
 
+A pasta do projeto possui algumas pastas:
+
+- config - para banco de dados de arquivos de configuração
+- módulos - contém autenticação, usuário e horários registrados
+- utils - contém arquivo para codificar senha
+
 Project folder has some folders:
 
 - config - for configuration files database
@@ -128,6 +137,8 @@ Project folder has some folders:
 - utils - contains file to encode password
 
 ### Built With
+
+As seguintes ferramentas foram utilizadas na construção do projeto:
 
 The following tools were used in building the project:
 
