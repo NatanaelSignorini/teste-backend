@@ -15,18 +15,18 @@ registerEnumType(EtimeTypes, {
 @Entity()
 export class RegisteredTimes {
   @PrimaryGeneratedColumn({ type: 'int' })
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: number;
 
   @ManyToOne(() => Users, (user) => user.registeredtimes, { eager: true })
-  @Field()
+  @Field({ nullable: true })
   user: Users;
 
   @Column({ type: 'timestamptz' })
-  @Field()
+  @Field({ nullable: true })
   time_registered: Date;
 
   @Column({ type: 'varchar', length: 45, nullable: false })
-  @Field(() => EtimeTypes)
+  @Field(() => EtimeTypes, { nullable: true })
   time_types: EtimeTypes;
 }

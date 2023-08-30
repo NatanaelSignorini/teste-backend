@@ -47,14 +47,15 @@ export class RegisteredTimesResolver {
       user,
       data,
     );
+
     pubSub.publish(REGISTERED_TIMES, {
       registeredTimeAdded: registeredTime,
     });
     return registeredTime;
   }
 
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(ERole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.ADMIN)
   @Subscription(() => RegisteredTimes, {
     name: REGISTERED_TIMES,
   })

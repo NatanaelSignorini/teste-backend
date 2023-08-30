@@ -3,10 +3,10 @@
 # ------------------------------------------------------
 
 type RegisteredTimes {
-  id: ID!
-  user: Users!
-  time_registered: DateTime!
-  time_types: EtimeTypes!
+  id: ID
+  user: Users
+  time_registered: DateTime
+  time_types: EtimeTypes
 }
 
 """
