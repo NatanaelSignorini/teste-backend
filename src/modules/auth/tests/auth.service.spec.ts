@@ -4,7 +4,7 @@ import UserMocks from './__mock__/user';
 import { AuthService } from '../auth.service';
 import { JwtStrategy } from '../strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from '../constants';
+import { jwtConstants } from '../jwt-config/constants';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('UserService', () => {
@@ -26,7 +26,7 @@ describe('UserService', () => {
           useFactory: () => ({
             secret: jwtConstants.secret,
             signOptions: {
-              expiresIn: '60m',
+              expiresIn: jwtConstants.expiresIn,
             },
           }),
         }),

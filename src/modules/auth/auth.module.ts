@@ -7,7 +7,7 @@ import { Users } from '../users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 // import { LocalStrategy } from './strategy/local.strategy';
-import { jwtConstants } from './constants';
+import { jwtConstants } from './jwt-config/constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
@@ -17,7 +17,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       useFactory: () => ({
         secret: jwtConstants.secret,
         signOptions: {
-          expiresIn: '60m',
+          expiresIn: jwtConstants.expiresIn,
         },
       }),
     }),
