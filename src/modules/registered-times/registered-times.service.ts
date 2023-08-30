@@ -26,7 +26,7 @@ export class RegisteredTimesService {
       lastRegisteredTime?.time_registered?.getTime() >=
       time_registered?.getTime()
     ) {
-      throw new BadRequestException('Data precisa ser maior que anterior');
+      throw new BadRequestException('Date needs to be greater than previous');
     }
 
     const type =
@@ -41,7 +41,7 @@ export class RegisteredTimesService {
     });
 
     if (!registeredTime) {
-      throw new InternalServerErrorException('Falha ao criar registro');
+      throw new InternalServerErrorException('Failed to create record');
     }
 
     return this.registeredTimes.findOne({
