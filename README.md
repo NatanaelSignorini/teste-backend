@@ -6,7 +6,17 @@
 
 ```
 
-## Installation
+## How to run
+
+## Docker
+
+You will need Docker. So if don't have Docker click [Here](https://docs.docker.com/install/) and install it.
+With Docker installed, clone this repository and open it. In terminal type:
+
+```bash
+docker-compose up --build
+
+```
 
 ```bash
 # installation of dependencies
@@ -25,16 +35,6 @@ $ yarn run start or npm run start
 ```bash
 # unit tests
 $ yarn run test or npm run start
-
-```
-
-## Docker
-
-You will need Docker. So if don't have Docker click [Here](https://docs.docker.com/install/) and install it.
-With Docker installed, clone this repository and open it. In terminal type:
-
-```bash
-docker-compose up --build
 
 ```
 
