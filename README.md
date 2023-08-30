@@ -6,31 +6,27 @@
 
 ```
 
-## How to run
-
-## Docker
-
+## Prerequisites
 You will need Docker. So if don't have Docker click [Here](https://docs.docker.com/install/) and install it.
 With Docker installed, clone this repository and open it. In terminal type:
-
 ```bash
+# installation database
 docker-compose up --build
 
 ```
-
+## Install Dependecies
 ```bash
 # installation of dependencies
 $ yarn install or npm install
 ```
 
-## Running the app
-
+## Running the Project
 ```bash
 # development
 $ yarn run start or npm run start
 ```
 
-## Test
+## Running the Tests
 
 ```bash
 # unit tests
@@ -127,11 +123,11 @@ Project folder has some folders:
 
 The following tools were used in building the project:
 
-- [NestJs](https://nestjs.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [TypeOrm](https://typeorm.io/)
-- [Postegres](https://www.postgresql.org/)
-- [Bcrypt](https://www.npmjs.com/package/bcrypt)
-- [Jwt](https://jwt.io/)
-- [GraphQL](https://graphql.org/)
-- [Docker](https://www.docker.com/)
+- [NestJs](https://nestjs.com/) - The framework NestJs used
+- [TypeScript](https://www.typescriptlang.org/) - The TypeScript used
+- [TypeOrm](https://typeorm.io/) - The TypeOrm used
+- [Postegres](https://www.postgresql.org/) - The database Postegres used
+- [Bcrypt](https://www.npmjs.com/package/bcrypt) - The cryptography Bcrypt used
+- [Jwt](https://jwt.io/) - The JSON Web Tokens used
+- [GraphQL](https://graphql.org/) - The GraphQL used
+- [Docker](https://www.docker.com/) - The Docker used
