@@ -25,12 +25,23 @@ $ yarn run start or npm run start
 ```bash
 # unit tests
 $ yarn run test or npm run start
+
+```
+
+## Docker
+
+You will need Docker. So if don't have Docker click [Here](https://docs.docker.com/install/) and install it.
+With Docker installed, clone this repository and open it. In terminal type:
+
+```bash
+docker-compose up --build
+
 ```
 
 ## Folder Structure
 
 ```
-teste-backend-brainny
+teste-backend
 ├── README.md
 ├── nest-cli.json
 ├── package-lock.json
@@ -38,15 +49,13 @@ teste-backend-brainny
 ├── src
 │   ├── app.module.ts
 │   ├── config
-│   │   ├── database.module.ts
-│   │   └── jwt.module.ts
+│   │   └── database.module.ts
 │   ├── main.ts
 │   ├── modules
 │   │   ├── auth
 │   │   │   ├── auth.module.ts
 │   │   │   ├── auth.resolver.ts
 │   │   │   ├── auth.service.ts
-│   │   │   ├── constants.ts
 │   │   │   ├── decorators
 │   │   │   │   ├── current-user.decorator.ts
 │   │   │   │   └── roles.decorator.ts
@@ -59,6 +68,8 @@ teste-backend-brainny
 │   │   │   ├── guards
 │   │   │   │   ├── jwt.guard.ts
 │   │   │   │   └── roles.guard.ts
+│   │   │   ├── jwt-config
+│   │   │   │   └── constants.ts
 │   │   │   ├── strategies
 │   │   │   │   └── jwt.strategy.ts
 │   │   │   └── tests
@@ -103,14 +114,16 @@ teste-backend-brainny
 ├── tsconfig.json
 └── yarn.lock
 
+
 ```
+
 Project folder has some folders:
-* config - for configuration files database and Jwt
-* modules - contains the auth, user and registered-times
-* utils - contains file to encode password 
 
+- config - for configuration files database
+- modules - contains the auth, user and registered-times
+- utils - contains file to encode password
 
-###  Technologies
+### Technologies
 
 The following tools were used in building the project:
 
@@ -121,9 +134,4 @@ The following tools were used in building the project:
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [Jwt](https://jwt.io/)
 - [GraphQL](https://graphql.org/)
-
-
-
-
-
-
+- [Docker](https://www.docker.com/)
