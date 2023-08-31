@@ -4,7 +4,7 @@ import { AuthInput } from './dto/auth.input';
 import { AuthType } from './dto/auth.type';
 import { Users } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 
 @Injectable()
 export class AuthService {

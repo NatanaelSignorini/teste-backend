@@ -1,0 +1,20 @@
+services:
+  database:
+    volumes:
+      - './utils/provisioning/init.sql:/docker-entrypoint-initdb.d/init.sql'
+  service:
+    volumes:
+      - './:/srv/app'
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      JWT_SECRET: $JWT_SECRET
+      JWT_EXPIRESIN: $JWT_EXPIRESIN
+      POSTGRES_DATABASE: $POSTGRES_DATABASE
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_HOST: database
+    entrypoint: 'npm run start:dev'
+    depends_on:
+      - database

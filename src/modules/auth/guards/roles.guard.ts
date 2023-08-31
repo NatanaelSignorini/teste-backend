@@ -1,7 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Reflector } from '@nestjs/core';
-//import { IDecodedAccessToken } from '../interfaces/decoded-access-token.interface';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

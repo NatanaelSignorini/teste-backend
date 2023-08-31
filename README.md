@@ -16,29 +16,22 @@ With Docker installed, clone this repository and open it. In terminal type:
 
 ```bash
 # installation database
-docker-compose up --build
+docker-compose up
 
 ```
 
-## Install Dependecies
+To add Admin User:
 
 ```bash
-# installation of dependencies
-$ yarn install or npm install
-```
-
-## Running the Project
-
-```bash
-# development
-$ yarn run start or npm run start
+# installation database
+$ yarn seed or npm run seed
 ```
 
 ## Running the Tests
 
 ```bash
 # unit tests
-$ yarn run test or npm run start
+$ yarn run test or npm run test
 
 ```
 

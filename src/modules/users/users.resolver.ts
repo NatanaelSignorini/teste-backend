@@ -35,8 +35,8 @@ export class UsersResolver {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ERole.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(ERole.ADMIN)
   @Mutation(() => Users)
   async createUser(@Args('data') data: CreateUserInput): Promise<Users> {
     const user = await this.usersService.createUser(data);
