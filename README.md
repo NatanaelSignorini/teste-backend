@@ -20,10 +20,12 @@ docker-compose up
 
 ```
 
+Para adicionar usuário administrador:
+
 To add Admin User:
 
 ```bash
-# installation database
+# run seed
 $ yarn seed or npm run seed
 ```
 
