@@ -41,14 +41,21 @@ $ yarn run test or npm run test
 teste-backend
 .
 ├── README.md
+├── docker-compose.override.yml
 ├── docker-compose.yml
+├── dockerfile
 ├── nest-cli.json
 ├── package-lock.json
 ├── package.json
 ├── src
 │   ├── app.module.ts
 │   ├── config
-│   │   └── database.module.ts
+│   │   └── orm.config.ts
+│   ├── database
+│   │   ├── migrations
+│   │   └── seeders
+│   │       ├── admin.seeder.ts
+│   │       └── seeder.ts
 │   ├── main.ts
 │   ├── modules
 │   │   ├── auth
@@ -112,6 +119,9 @@ teste-backend
 ├── tsconfig.build.json
 ├── tsconfig.json
 ├── utils
+│   ├── Insomnia.json
+│   └── provisioning
+│       └── init.sql
 └── yarn.lock
 
 
