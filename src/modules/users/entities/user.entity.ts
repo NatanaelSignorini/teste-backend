@@ -47,6 +47,7 @@ export class Users {
 
   @OneToMany(() => RegisteredTimes, (registeredTime) => registeredTime.user, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   registeredtimes: RegisteredTimes[];
 

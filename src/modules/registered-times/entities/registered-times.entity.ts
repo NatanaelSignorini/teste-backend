@@ -18,7 +18,10 @@ export class RegisteredTimes {
   @Field(() => ID, { nullable: true })
   id: number;
 
-  @ManyToOne(() => Users, (user) => user.registeredtimes, { eager: true })
+  @ManyToOne(() => Users, (user) => user.registeredtimes, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @Field({ nullable: true })
   user: Users;
 
